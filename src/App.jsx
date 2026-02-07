@@ -6,6 +6,7 @@ import penguinImg from './assets/penguin.jpg'
 function App() {
   const [yesPressed, setYesPressed] = useState(false)
   const [noPos, setNoPos] = useState({ top: 'auto', left: 'auto', position: 'relative' })
+  const [btnSize, setBtnSize] = useState(null)
   const confettiCanvasRef = useRef(null)
 
   const noBtnRef = useRef(null)
@@ -35,8 +36,13 @@ function App() {
     // Update timestamp for throttling
     lastMoveTime.current = Date.now()
 
-    // Dynamic dimensions
     const btnRect = noBtnRef.current.getBoundingClientRect()
+
+    // Capture initial button size
+    if (!btnSize) {
+      setBtnSize({ width: btnRect.width, height: btnRect.height })
+    }
+
     const containerRect = containerRef.current.getBoundingClientRect()
 
     const btnWidth = btnRect.width
@@ -189,6 +195,10 @@ function App() {
             >
               Yes 💕
             </button>
+            {/* Placeholder to keep layout stable */}
+            {noPos.position === 'absolute' && btnSize && (
+              <div style={{ width: btnSize.width, height: btnSize.height }} />
+            )}
             <button
               ref={noBtnRef}
               className="btn-no"
